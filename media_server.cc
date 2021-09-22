@@ -63,7 +63,7 @@ void MediaServer::onMessage(const muduo::net::TcpConnectionPtr& conn)
     std::vector<int> dst;
     int src = conn.getFd();
     
-    for(atuo it = ptr->begin(); it < ptr->end(); ++it)
+    for(auto it = ptr->begin(); it < ptr->end(); ++it)
     {
         TerminalPtr ptr = PortMap_[*it];
         dst.push_back(ptr->fd());
@@ -77,7 +77,7 @@ void MediaServer::onMessage(const muduo::net::TcpConnectionPtr& conn)
     
         if (n > 0)
         {
-            for(atuo it = dst.begin(); it < dst.end(); ++it)
+            for(auto it = dst.begin(); it < dst.end(); ++it)
             {
                 ssize_t nwrote = sockets::write(*it, data, len);
                 if(nwrote < 0)
