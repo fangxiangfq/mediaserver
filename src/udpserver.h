@@ -22,7 +22,7 @@ public:
 
     UdpServer(EventLoop* loop,
               const string& nameArg,
-              Option option = kNoReusePort);
+              Option option = kReusePort);
     ~UdpServer(); 
 
     const string& name() const { return name_; }
@@ -44,7 +44,7 @@ public:
     { writeCompleteCallback_ = cb; }
 
 
-    void addListener(const InetAddress& listenAddr);
+    int addListener(const InetAddress& listenAddr);
     void removeListenerByAddr(const InetAddress& listenAddr);
     void removeListener(std::shared_ptr<Listener> listener);
 private:  

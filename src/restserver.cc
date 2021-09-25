@@ -86,7 +86,7 @@ void RestServer::sendResponse(const TcpConnectionPtr& conn, std::string& str, re
     }
     else
     {
-        rsp.setStatusCode(HttpResponse::kUnknown);
+        rsp.setStatusCode(HttpResponse::k301MovedPermanently);
         rsp.setStatusMessage("ERR");
     }
 

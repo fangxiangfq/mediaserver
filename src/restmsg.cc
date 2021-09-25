@@ -10,7 +10,30 @@ namespace rest
         parse_ = reader.parse(body, root_);
     }
     
-    bool JsonParser::CreateParse(std::string& terno) 
+    bool JsonParser::CreateParse(std::string& terno, std::string& ip, uint16_t& port) 
+    {
+        if(!DeleteParse(terno))
+            return false;
+        Json::Value tmp = root_["ip"];
+        if(!tmp || !tmp.isString())
+        {
+            return false;
+        }
+
+        ip = tmp.asString();
+        tmp = Json::Value::null;
+        tmp = root_["port"];
+        if(!tmp || !tmp.isUInt())
+        {
+            return false;
+        }
+
+        port = static_cast<uint16_t>(tmp.asUInt());
+
+        return port;
+    }
+    
+    bool JsonParser::DeleteParse(std::string& terno) 
     {
         if(!parse_)
             return parse_;
@@ -21,19 +44,14 @@ namespace rest
         }
         else
         {
-            terno = root_["terno"].asString();
+            terno = tmp.asString();
             return true;
         }
     }
     
-    bool JsonParser::DeleteParse(std::string& terno) 
-    {
-        return CreateParse(terno);
-    }
-    
     bool JsonParser::RouteParse(std::string& src, std::vector<std::string>& dst) 
     {
-        if(!CreateParse(src))
+        if(!DeleteParse(src))
             return false;
         Json::Value arr = root_["dst"];
         if(!arr || !arr.isArray())
@@ -60,7 +78,7 @@ namespace rest
     }
     
     //todo change to templates
-    JsonBuilder::JsonBuilder(Code code, std::string& key, uint16_t value) 
+    JsonBuilder::JsonBuilder(Code code, std::string key, uint16_t value) 
     {
         root_["code"] = static_cast<int>(code);
         root_["msg"] = msgmap_[code];
@@ -71,7 +89,7 @@ namespace rest
         root_["data"] = data;
     }
     
-    JsonBuilder::JsonBuilder(Code code, std::string& key, std::string str) 
+    JsonBuilder::JsonBuilder(Code code, std::string key, std::string str) 
     {
         root_["code"] = static_cast<int>(code);
         root_["msg"] = msgmap_[code];
@@ -82,9 +100,9 @@ namespace rest
         root_["data"] = data;
     }
     
-    std::string&& JsonBuilder::toString() 
+    std::string JsonBuilder::toString() 
     {
         Json::FastWriter writer;
-        return std::move(writer.write(root_));
+        return writer.write(root_);
     }
 }

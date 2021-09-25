@@ -1,16 +1,18 @@
 #include "listener.h"
 #include "muduo/net/SocketsOps.h"
 #include "muduo/net/EventLoop.h"
+#include "muduo/base/Logging.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "mysockets.h"
 
 void myDefaultMessageCallback(int sockfd, InetAddress addr){}
 
 Listener::Listener(EventLoop* loop, const InetAddress& listenAddr, bool reuseport)
   : loop_(loop),
     listenAddr_(listenAddr),
-    listenSocket_(sockets::createNonblockingOrDie(listenAddr.family())),
+    listenSocket_(mysockets::createNonblockingOrDieForUdp(listenAddr.family())),
     listenChannel_(loop, listenSocket_.fd()),
     listening_(false),
     idleFd_(::open("/dev/null", O_RDONLY | O_CLOEXEC))

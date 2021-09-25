@@ -21,7 +21,7 @@ namespace rest
     public:
         JsonParser(std::string& body);
 
-        bool CreateParse(std::string& terno);
+        bool CreateParse(std::string& terno, std::string& ip, uint16_t& port);
         bool DeleteParse(std::string& terno);
         bool RouteParse(std::string& src, std::vector<std::string>& dst);
     private:
@@ -33,10 +33,10 @@ namespace rest
     {
     public:
         JsonBuilder(Code code);
-        JsonBuilder(Code code, std::string& key, uint16_t value);
-        JsonBuilder(Code code, std::string& key, std::string str);
+        JsonBuilder(Code code, std::string key, uint16_t value);
+        JsonBuilder(Code code, std::string key, std::string str);
 
-        std::string&& toString();
+        std::string toString();
         static MsgMap msgmap_;
     private:
         Json::Value root_;

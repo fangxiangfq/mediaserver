@@ -41,12 +41,16 @@ void UdpServer::start()
     }
 }
 
-void UdpServer::addListener(const InetAddress& listenAddr)
+int UdpServer::addListener(const InetAddress& listenAddr)
 {
     std::shared_ptr<Listener> listener = std::make_shared<Listener>(loop_, listenAddr, true);
 
     listener->setMessageCallback(messageCallback_);
     listenMap_.emplace(listenAddr.port(), listener);
+    assert(!listener->listening());
+    loop_->runInLoop(
+        std::bind(&Listener::listen, listener));
+    return listener->get_fd();
 }
 
 void UdpServer::removeListenerByAddr(const InetAddress& listenAddr)

@@ -23,6 +23,7 @@ public:
 
     void listen();
 
+    int get_fd() {return listenSocket_.fd();};
     bool listening() const { return listening_; }
 
 private:

@@ -13,14 +13,15 @@ void LogOutput(const char* msg, int len)
     }
 }
 
-int main()
+int main(int argc, char** argv)
 {
+
     g_logFile.reset(new muduo::LogFile("ms", 500*1000*1000, false));
     muduo::Logger::setOutput(LogOutput);
     Logger::setLogLevel(Logger::INFO);
     LOG_INFO << "pid = " << getpid();
     muduo::net::EventLoop loop;
-    MediaServer server(&loop, 3, 8000);
+    MediaServer server(&loop, 1, 8000);
     
     server.start();
     loop.loop();
