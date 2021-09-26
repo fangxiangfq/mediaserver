@@ -23,10 +23,12 @@ Listener::Listener(EventLoop* loop, const InetAddress& listenAddr, bool reusepor
     listenSocket_.bindAddress(listenAddr);
     listenChannel_.setReadCallback(
         std::bind(&Listener::handleRead, this));
+    LOG_TRACE << "fd = " << listenSocket_.fd();
 }
 
 Listener::~Listener()
 {
+    LOG_TRACE << "Distruct fd = " << listenSocket_.fd();
     listenChannel_.disableAll();
     listenChannel_.remove();
     ::close(idleFd_);
@@ -47,6 +49,7 @@ void Listener::handleRead()
         if (messageCallback_)
         {
             messageCallback_(listenSocket_.fd(), listenAddr_);
+            LOG_TRACE << "Rev fd = " << listenSocket_.fd();
         }
     }
 }

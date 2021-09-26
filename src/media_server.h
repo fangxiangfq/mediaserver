@@ -31,7 +31,7 @@ typedef std::shared_ptr<Terminal> TerminalPtr;
 class MediaServer
 {
  public:
-    MediaServer(muduo::net::EventLoop* loop, int num, uint16_t rest_port, uint16_t min_media_port = 10000, uint16_t max_media_port = 20000);
+    MediaServer(muduo::net::EventLoop* loop, int num = 1, uint16_t rest_port = 8000, uint16_t min_media_port = 10000, uint16_t max_media_port = 20000);
 
     void start(); 
     muduo::net::EventLoop* get_loop() const {return server_.getLoop();};

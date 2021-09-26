@@ -55,6 +55,7 @@ int UdpServer::addListener(const InetAddress& listenAddr)
 
 void UdpServer::removeListenerByAddr(const InetAddress& listenAddr)
 {
+    LOG_TRACE << "Remove Port = " << listenAddr.port();
     uint16_t port = listenAddr.port();
     if(0 < listenMap_.count(port))
     {

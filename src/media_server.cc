@@ -35,13 +35,13 @@ void MediaServer::onSend(int fd, std::vector<mysockets::sockinfo> dst, muduo::ne
         {
             ssize_t nwrote = mysockets::sendto(*it, msg.c_str(), msg.length());
             if(nwrote < 0)
-            {
+            {//todo know why runned without judge
                 mainloop->runInLoop(std::bind(&UdpServer::removeListenerByAddr, &server_, addr));
             }
         }
     }
     else if (n <= 0)
-    {
+    {//todo know why runned without judge
         mainloop->runInLoop(std::bind(&UdpServer::removeListenerByAddr, &server_, addr));
     }
 }
